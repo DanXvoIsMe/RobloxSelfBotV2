@@ -125,8 +125,8 @@ local Ops = {
 }
 
 Window:Center()
-local function createWebSocket()
-    local Ws = WebSocket.connect(Info["wsurl"])
+function Commands:Websocket()
+	Ws = WebSocket.connect(Info["wsurl"])
 
     Ws.OnMessage:Connect(function(message)
         local success, data = pcall(Info["tolua"], message)
@@ -149,7 +149,4 @@ local function createWebSocket()
     return Ws
 end
 
-Ws = createWebSocket()
-Commands:addCommand("!output",function(info) --> !move hello eg
-    Commands:Output(`[~] {info.username} with userid {info.userId} said: {info.content}`,194, 120, 17) --> content: hello
-end)
+return Commands

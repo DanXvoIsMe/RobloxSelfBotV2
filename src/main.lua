@@ -50,7 +50,7 @@ ButtonRow:Fill()
 Window:ShowTab(ConsoleTab) 
 
 
-local Ws = WebSocket.connect(Info["wsurl"])
+local Ws = nil
 local Commands = {}
 
 function Commands:getcommand(content)
@@ -125,8 +125,9 @@ local Ops = {
 }
 
 Window:Center()
-function Commands:Websocket()
-	Ws = WebSocket.connect(Info["wsurl"])
+function Commands:Websocket(info)
+    Info["token"] = info["token"]
+    Ws = WebSocket.connect(Info["wsurl"])
 
     Ws.OnMessage:Connect(function(message)
         local success, data = pcall(Info["tolua"], message)

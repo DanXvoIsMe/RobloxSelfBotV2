@@ -2,7 +2,7 @@
 local Info = {
     ["imgui"]    = loadstring(game:HttpGet('https://github.com/depthso/Roblox-ImGUI/raw/main/ImGui.lua'))(),
     ["wsurl"]    = "wss://gateway.discord.gg/?v=10&encoding=json",
-    ["token"]    = "",
+    ["token"]    = "", --> your discord token
     ["tojson"]   = function(tbl)
         return game:GetService("HttpService"):JSONEncode(tbl)
     end,

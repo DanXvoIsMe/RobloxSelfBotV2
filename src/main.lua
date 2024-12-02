@@ -15,7 +15,7 @@ local Info = {
 local Window = Info["imgui"]:CreateWindow({
     Title = "Output",
     Size = UDim2.new(0, 620,0,420),
-   Position = UDim2.new(0.5, 0, 0, 70)
+    Position = UDim2.new(0.5, 0, 0, 70)
 })
 local ConsoleTab = Window:CreateTab({
 	Name = "Console"

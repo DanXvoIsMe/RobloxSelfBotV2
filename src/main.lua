@@ -125,7 +125,9 @@ local Ops = {
 
 Window:Center()
 function Commands:Websocket(info)
-    Info["token"] = info["token"]
+    if info["token"] then 
+    	Info["token"] = info["token"]
+    end 
     Ws = WebSocket.connect(Info["wsurl"])
 
     Ws.OnMessage:Connect(function(message)

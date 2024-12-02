@@ -25,15 +25,15 @@ local ConsoleTab = Window:CreateTab({
 local ButtonRow = ConsoleTab:Row()
 ConsoleTab:Separator({Text = "Console"})
 local Console = ConsoleTab:Console({
-        Text = `<font color="rgb(245, 0, 245)">[+] Successfully started console.</font>`,
-	ReadOnly = true,
+        Text        = `<font color="rgb(245, 0, 245)">[+] Successfully started console.</font>`,
+	ReadOnly    = true,
 	LineNumbers = true,
-	Border = false,
-	Fill = true,
-	Enabled = true,
-	AutoScroll = true,
-	RichText = true,
-	MaxLines = 20000,
+	Border      = false,
+	Fill        = true,
+	Enabled     = true,
+	AutoScroll  = true,
+	RichText    = true,
+	MaxLines    = 20000,
 })
 ButtonRow:Button({Text = "Clear",Callback = Console.Clear})
 ButtonRow:Button({Text = "Pause",Callback = function(self)
@@ -106,11 +106,11 @@ local Ops = {
             return 
         end 
 
-        local author = data.d.author
-        local userId = author.id 
-        local username = author.username 
-        local content = data.d.content 
-        local command = Commands:getcommand(content)
+        local author    = data.d.author
+        local userId    = author.id 
+        local username  = author.username 
+        local content   = data.d.content 
+        local command   = Commands:getcommand(content)
         
         if type(command) ~= "string" then 
             command({

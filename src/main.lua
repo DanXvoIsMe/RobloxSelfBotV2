@@ -2,7 +2,7 @@
 local Info = {
     ["imgui"]    = loadstring(game:HttpGet('https://github.com/depthso/Roblox-ImGUI/raw/main/ImGui.lua'))(),
     ["wsurl"]    = "wss://gateway.discord.gg/?v=10&encoding=json",
-    ["token"]    = "", --> your discord token
+    ["token"]    = "",
     ["tojson"]   = function(tbl)
         return game:GetService("HttpService"):JSONEncode(tbl)
     end,
@@ -37,14 +37,13 @@ local Console = ConsoleTab:Console({
 })
 ButtonRow:Button({Text = "Clear",Callback = Console.Clear})
 ButtonRow:Button({Text = "Pause",Callback = function(self)
-		local Paused = shared.Pause
-		Paused = not (Paused or false)
-		shared.Pause = Paused
+	local Paused = shared.Pause
+	Paused = not (Paused or false)
+	shared.Pause = Paused
 		
-		self.Text = Paused and "Paused" or "Pause"
-		Console.Enabled = not Paused
-	end,
-})
+	self.Text = Paused and "Paused" or "Pause"
+	Console.Enabled = not Paused
+end,})
 ButtonRow:Fill()
 
 Window:ShowTab(ConsoleTab) 

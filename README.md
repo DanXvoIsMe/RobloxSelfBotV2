@@ -21,3 +21,5 @@ Bot:Websocket({
 Now you can do a whole lot of more with this when forking it and modifying it yourself. Im just giving you the base.
 
 However I will probaly not continue updating this repository due to me working on a discord bot framework which will also be fully writen in luau with embed & components support.
+
+Fork however you want this is an open repository. However do not steal this code and claim it is yours thanks!

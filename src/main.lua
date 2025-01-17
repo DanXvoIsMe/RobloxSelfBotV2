@@ -66,14 +66,8 @@ function Commands:addCommand(name,func)
 end 
 
 
---> this is a retarded method of doing it
 function Commands:not1(tab: table)
-    local out = ""
-    for i,v in pairs(tab) do
-        if i ~= 1 then
-            out = out.." "..v 
-        end 
-    end 
+    local out = "" ; for i,v in pairs(tab) do if i ~= 1 then out = out.." "..v  end ; end 
     return out
 end 
 

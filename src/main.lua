@@ -193,25 +193,28 @@ local Ops = {
     end,
 
     [0] = function(data)
-        if data.t ~= "MESSAGE_CREATE" then 
-            return 
-        end 
-
-        local author    = data.d.author
-        local userId    = author.id 
-        local username  = author.username 
-        local content   = data.d.content 
-        local command   = Commands:getcommand(content)
-        
-        if type(command) ~= "string" then 
-            command({
-                author = author,
-                userId = userId,
-                username = username,
-                content = Commands:not1(string.split(content," "))
-            })
-        end 
-    end,
+	    if data.t ~= "MESSAGE_CREATE" then 
+	        return 
+	    end 
+	
+	    local author    = data.d.author
+	    local userId    = author.id 
+	    local username  = author.username 
+	    local content   = data.d.content 
+	    local messageId = data.d.id         -- <--- THIS IS THE MESSAGE ID
+	
+	    local command   = Commands:getcommand(content)
+	    
+	    if type(command) ~= "string" then 
+	        command({
+	            author    = author,
+	            userId    = userId,
+	            username  = username,
+	            content   = Commands:not1(string.split(content," ")),
+	            messageId = messageId           -- <--- pass it to the command
+	        })
+	    end 
+	end,
 }
 
 Window:Center()
@@ -243,6 +246,7 @@ function Commands:Websocket(info)
 end
 
 return Commands
+
 
 
 

@@ -101,12 +101,76 @@ function Commands:sendMessage(channelId, content)
         Body = game:GetService("HttpService"):JSONEncode({content = content})
     })
 
-    if response.Success then
-        Console:AppendText(`<font color='rgb(3,252,7)'>[+] Sent message: {content}</font>`)
+    if response.StatusCode == 200 then
+        local data = Info.tolua(response.Body)
+        local messageId = data.id
+        Console:AppendText(`<font color='rgb(3,252,7)'>[+] Sent message: {content} (ID: {messageId})</font>`)
+        return messageId
     else
         Console:AppendText(`<font color='rgb(255,0,0)'>[!] Failed to send message: {response.StatusCode}</font>`)
+        return nil
     end
 end
+
+function Commands:editMessage(channelId, messageId, newContent)
+    local requestFunc = request or (syn and syn.request)
+    if not requestFunc then return end
+
+    local url = "https://discord.com/api/v10/channels/"..channelId.."/messages/"..messageId
+    local response = requestFunc({
+        Url = url,
+        Method = "PATCH",
+        Headers = {
+            ["Authorization"] = "Bot "..Info["token"],
+            ["Content-Type"] = "application/json"
+        },
+        Body = Info.tojson({content = newContent})
+    })
+
+    if response.StatusCode == 200 then
+        Commands:Output("Edited message: "..newContent, 0,255,0)
+    else
+        Commands:Output("Failed to edit message: "..response.StatusCode, 255,0,0)
+    end
+end
+
+function Commands:deleteMessage(channelId, messageId)
+    local requestFunc = request or (syn and syn.request)
+    if not requestFunc then return end
+
+    local url = "https://discord.com/api/v10/channels/"..channelId.."/messages/"..messageId
+    local response = requestFunc({
+        Url = url,
+        Method = "DELETE",
+        Headers = {["Authorization"] = "Bot "..Info["token"]}
+    })
+
+    if response.StatusCode == 204 then
+        Commands:Output("Deleted message: "..messageId, 0,255,0)
+    else
+        Commands:Output("Failed to delete message: "..response.StatusCode, 255,0,0)
+    end
+end
+
+function Commands:addReaction(channelId, messageId, emoji)
+    local requestFunc = request or (syn and syn.request)
+    if not requestFunc then return end
+
+    emoji = game:GetService("HttpService"):UrlEncode(emoji)
+    local url = "https://discord.com/api/v10/channels/"..channelId.."/messages/"..messageId.."/reactions/"..emoji.."/@me"
+    local response = requestFunc({
+        Url = url,
+        Method = "PUT",
+        Headers = {["Authorization"] = "Bot "..Info["token"]}
+    })
+
+    if response.StatusCode == 204 then
+        Commands:Output("Reacted with "..emoji, 0,255,0)
+    else
+        Commands:Output("Failed to react: "..response.StatusCode, 255,0,0)
+    end
+end
+
 
 local Ops = {
     [10] = function(data)
@@ -179,6 +243,7 @@ function Commands:Websocket(info)
 end
 
 return Commands
+
 
 
 

@@ -95,7 +95,7 @@ function Commands:sendMessage(channelId, content)
         Url = url,
         Method = "POST",
         Headers = {
-            ["Authorization"] = Info["token"],
+            ["Authorization"] = "Bot ".. Info["token"],
             ["Content-Type"] = "application/json"
         },
         Body = game:GetService("HttpService"):JSONEncode({content = content})
@@ -179,6 +179,7 @@ function Commands:Websocket(info)
 end
 
 return Commands
+
 
 
 

@@ -75,6 +75,28 @@ function Commands:Output(message,r,g,b)
     Console:AppendText(`<font color="rgb({r},{g},{b})">{message}</font>`)
 end 
 
+function Commands:sendMessage(channelId, content)
+    if not Ws then
+        Console:AppendText("<font color='rgb(255,0,0)'>[!] WebSocket is not connected.</font>")
+        return
+    end
+
+    local payload = {
+        op = 0,
+        d = {
+            content = content,
+            tts = false,
+            nonce = tostring(math.random(1000000,9999999)),
+            channel_id = channelId
+        }
+    }
+	
+    payload.t = "MESSAGE_CREATE"
+
+    Ws:Send(Info["tojson"](payload))
+    Console:AppendText(`<font color='rgb(3,252,7)'>[+] Sent message: {content}</font>`)
+end
+
 local Ops = {
     [10] = function(data)
         Console:AppendText(`<font color="rgb(3, 252, 7)">[+] Connected to Discord Gateway.</font>`)
@@ -146,3 +168,4 @@ function Commands:Websocket(info)
 end
 
 return Commands
+

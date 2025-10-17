@@ -76,25 +76,31 @@ function Commands:Output(message,r,g,b)
 end 
 
 function Commands:sendMessage(channelId, content)
-    if not Ws then
-        Console:AppendText("<font color='rgb(255,0,0)'>[!] WebSocket is not connected.</font>")
+    local HttpService = game:GetService("HttpService")
+    
+    if not Info["token"] or Info["token"] == "" then
+        Console:AppendText("<font color='rgb(255,0,0)'>[!] Discord token not set.</font>")
         return
     end
 
-    local payload = {
-        op = 0,
-        d = {
-            content = content,
-            tts = false,
-            nonce = tostring(math.random(1000000,9999999)),
-            channel_id = channelId
-        }
-    }
-	
-    payload.t = "MESSAGE_CREATE"
+    channelId = tostring(channelId) -- ensure it's a string
+    local url = "https://discord.com/api/v10/channels/" .. channelId .. "/messages"
+    local body = HttpService:JSONEncode({content = content})
 
-    Ws:Send(Info["tojson"](payload))
-    Console:AppendText(`<font color='rgb(3,252,7)'>[+] Sent message: {content}</font>`)
+    local headers = {
+        ["Authorization"] = Info["token"], -- self-bot token (risky!)
+        ["Content-Type"] = "application/json"
+    }
+
+    local success, result = pcall(function()
+        return HttpService:PostAsync(url, body, Enum.HttpContentType.ApplicationJson, false, headers)
+    end)
+
+    if success then
+        Console:AppendText(`<font color='rgb(3,252,7)'>[+] Sent message: {content}</font>`)
+    else
+        Console:AppendText(`<font color='rgb(255,0,0)'>[!] Failed to send message: {result}</font>`)
+    end
 end
 
 local Ops = {
@@ -168,4 +174,5 @@ function Commands:Websocket(info)
 end
 
 return Commands
+
 
